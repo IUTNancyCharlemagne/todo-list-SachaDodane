@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'tasks_preview.dart';
 import '../models/task.dart';
-
 class TasksMaster extends StatefulWidget {
   @override
-  _TasksMaster createState() => _TasksMaster();
+  _TasksMasterState createState() => _TasksMasterState();
 }
 
-class _TasksMaster extends State<TasksMaster> {
-  Future<List<Task>> _fetchTasks() {
+class _TasksMasterState extends State<TasksMaster> {
+  List<Task> _tasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTasks().then((tasks) {
+      setState(() {
+        _tasks = tasks;
+      });
+    });
+  }
+
+  Future<List<Task>> _fetchTasks() async {
     List<Task> tasks = [];
-    for (var i = 0; i < 100; i++) {
+    for (int i = 0; i < 100; i++) {
       tasks.add(Task(
         id: i,
         content: faker.lorem.sentence(),
@@ -19,34 +30,26 @@ class _TasksMaster extends State<TasksMaster> {
         title: faker.lorem.word(),
       ));
     }
-    return Future<List<Task>>.value(tasks);
+    return tasks;
+  }
+
+  void _toggleTaskCompletion(Task task, bool? completed) {
+    setState(() {
+      task.completed = completed!;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Tasks Master'),
-      ),
-      body: FutureBuilder<List<Task>>(
-        future: _fetchTasks(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Erreur : ${snapshot.error}'));
-          } else {
-            List<Task> tasks = snapshot.data!;
-            return ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                Task task = tasks[index];
-                return TaskPreview(task: task);
-              },
-            );
-          }
-        },
-      ),
+    return ListView.builder(
+      itemCount: _tasks.length,
+      itemBuilder: (context, index) {
+        Task task = _tasks[index];
+        return TaskPreview(
+          task: task,
+          onChanged: (completed) => _toggleTaskCompletion(task, completed),
+        );
+      },
     );
   }
 }

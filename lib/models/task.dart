@@ -2,7 +2,7 @@
 class Task {
   final int? id;
   final String content;
-  final bool completed;
+  late bool completed;
   final String title;
   Task({
     this.id,
