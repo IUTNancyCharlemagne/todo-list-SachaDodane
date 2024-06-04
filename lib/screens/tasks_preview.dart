@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_v1/models/task.dart';
+import 'package:todo_list_v1/screens/tasks_details.dart';
 
 class TaskPreview extends StatelessWidget {
   final Task task;
@@ -18,6 +19,14 @@ class TaskPreview extends StatelessWidget {
           value: task.completed,
           onChanged: onChanged,
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskDetails(task: task),
+            ),
+          );
+        },
       ),
     );
   }

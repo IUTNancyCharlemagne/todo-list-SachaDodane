@@ -1,9 +1,9 @@
 
 class Task {
   final int? id;
-  final String content;
+  late final String content;
   late bool completed;
-  final String title;
+  late final String title;
   Task({
     this.id,
     required this.content,
