@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import '../models/task.dart';
-
-import 'package:flutter/material.dart';
 import 'package:todo_list_v1/models/task.dart';
 
 class TaskDetails extends StatefulWidget {
   final Task task;
   final Function(Task) onSave;
 
-  const TaskDetails({Key? key, required this.task, required this.onSave})
-      : super(key: key);
+  const TaskDetails({super.key, required this.task, required this.onSave});
 
   @override
   _TaskDetailsState createState() => _TaskDetailsState();
@@ -35,6 +31,18 @@ class _TaskDetailsState extends State<TaskDetails> {
     super.dispose();
   }
 
+  void _saveTask() {
+    widget.task.title = _titleController.text;
+    widget.task.content = _contentController.text;
+    widget.task.completed = _completed;
+    print('Saving updated task: ${widget.task.toJson()}');
+    widget.onSave(widget.task);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Task updated successfully!')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,47 +51,44 @@ class _TaskDetailsState extends State<TaskDetails> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
-              onChanged: (value) {
-                setState(() {
-                  _titleController.text = value;
-                });
-              },
-            ),
-            TextFormField(
-              controller: _contentController,
-              decoration: InputDecoration(labelText: 'Content'),
-              onChanged: (value) {
-                setState(() {
-                  _contentController.text = value;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: Text('Completed'),
-              value: _completed,
-              onChanged: (value) {
-                setState(() {
-                  _completed = value!;
-                });
-              },
-            ),
-          ],
+        child: Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: InputDecoration(labelText: 'Title'),
+                onChanged: (value) {
+                  setState(() {
+                    widget.task.title = value;
+                  });
+                },
+              ),
+              TextFormField(
+                controller: _contentController,
+                decoration: InputDecoration(labelText: 'Content'),
+                onChanged: (value) {
+                  setState(() {
+                    widget.task.content = value;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                title: Text('Completed'),
+                value: _completed,
+                onChanged: (value) {
+                  setState(() {
+                    _completed = value!;
+                    widget.task.completed = value;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          widget.task.title = _titleController.text;
-          widget.task.content = _contentController.text;
-          widget.task.completed = _completed;
-          widget.onSave(widget.task);
-          Navigator.pop(context);
-        },
+        onPressed: _saveTask,
         child: Icon(Icons.save),
       ),
     );

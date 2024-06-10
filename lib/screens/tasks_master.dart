@@ -1,57 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:faker/faker.dart';
-import 'tasks_preview.dart';
-import '../models/task.dart';
-
+import 'package:provider/provider.dart';
+import 'package:todo_list_v1/models/task.dart';
+import 'package:todo_list_v1/models/task_provider.dart';
+import 'package:todo_list_v1/screens/tasks_details.dart';
+import 'package:todo_list_v1/screens/task_form.dart';
+import 'package:todo_list_v1/screens/tasks_preview.dart';
 
 class TasksMaster extends StatefulWidget {
+  const TasksMaster({super.key});
+
   @override
-  _TasksMasterState createState() => _TasksMasterState();
+  State<TasksMaster> createState() => _TasksMasterState();
 }
 
 class _TasksMasterState extends State<TasksMaster> {
-  List<Task> _tasks = [];
-
   @override
   void initState() {
     super.initState();
-    _fetchTasks().then((tasks) {
-      setState(() {
-        _tasks = tasks;
-      });
-    });
-  }
-
-  Future<List<Task>> _fetchTasks() async {
-    List<Task> tasks = [];
-    for (int i = 0; i < 100; i++) {
-      tasks.add(Task(
-        id: i,
-        content: faker.lorem.sentence(),
-        completed: faker.randomGenerator.boolean(),
-        title: faker.lorem.word(),
-      ));
-    }
-    return tasks;
-  }
-
-  void _toggleTaskCompletion(Task task, bool? completed) {
-    setState(() {
-      task.completed = completed!;
-    });
+    Provider.of<TasksProvider>(context, listen: false).fetchTasks();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _tasks.length,
-      itemBuilder: (context, index) {
-        Task task = _tasks[index];
-        return TaskPreview(
-          task: task,
-          onChanged: (completed) => _toggleTaskCompletion(task, completed),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tasks Master'),
+      ),
+      body: Consumer<TasksProvider>(
+        builder: (context, tasksProvider, child) {
+          final tasks = tasksProvider.tasks;
+          if (tasks.isEmpty) {
+            return Center(child: Text('No tasks found'));
+          }
+          return ListView.builder(
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              final task = tasks[index];
+              return TaskPreview(
+                task: task,
+                onChanged: (value) {
+                  setState(() {
+                    task.completed = value!;
+                    tasksProvider.updateTask(task);
+                  });
+                },
+                onTap: () async {
+                  final updatedTask = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaskDetails(
+                        task: task,
+                        onSave: (updatedTask) {
+                          tasksProvider.updateTask(updatedTask);
+                        },
+                      ),
+                    ),
+                  );
+                  if (updatedTask != null) {
+                    tasksProvider.updateTask(updatedTask);
+                  }
+                },
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TaskForm(
+                onSave: (newTask) {
+                  Provider.of<TasksProvider>(context, listen: false).addTask(newTask);
+                },
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_v1/models/task.dart';
-import 'package:todo_list_v1/screens/tasks_details.dart';
 
 class TaskPreview extends StatelessWidget {
   final Task task;
   final ValueChanged<bool?> onChanged;
+  final VoidCallback onTap;
 
-  const TaskPreview({Key? key, required this.task, required this.onChanged}) : super(key: key);
+  const TaskPreview({
+    super.key,
+    required this.task,
+    required this.onChanged,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +24,7 @@ class TaskPreview extends StatelessWidget {
           value: task.completed,
           onChanged: onChanged,
         ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TaskDetails(task: task),
-            ),
-          );
-        },
+        onTap: onTap,
       ),
     );
   }
