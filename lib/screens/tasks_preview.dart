@@ -16,20 +16,26 @@ class TaskPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      title: Text(task.title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(task.content),
-          if (task.dueDate != null)
-            Text('Due: ${DateFormat('yyyy-MM-dd').format(task.dueDate!)}'),
-        ],
-      ),
-      trailing: Checkbox(
-        value: task.completed,
-        onChanged: onChanged,
+    return Card(
+      color: task.completed ? Colors.green.shade100 : Colors.orange.shade100,
+      child: ListTile(
+        onTap: onTap,
+        title: Text(
+          task.title,
+          style: TextStyle(decoration: task.completed ? TextDecoration.lineThrough : null),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(task.content),
+            if (task.dueDate != null)
+              Text('Due: ${DateFormat('yyyy-MM-dd').format(task.dueDate!)}'),
+          ],
+        ),
+        trailing: Checkbox(
+          value: task.completed,
+          onChanged: onChanged,
+        ),
       ),
     );
   }

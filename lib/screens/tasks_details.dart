@@ -67,62 +67,97 @@ class _TaskDetailsState extends State<TaskDetails> {
       appBar: AppBar(
         title: Text('Task Details'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _titleController,
-                decoration: InputDecoration(labelText: 'Title'),
-                onChanged: (value) {
-                  setState(() {
-                    widget.task.title = value;
-                  });
-                },
-              ),
-              TextFormField(
-                controller: _contentController,
-                decoration: InputDecoration(labelText: 'Content'),
-                onChanged: (value) {
-                  setState(() {
-                    widget.task.content = value;
-                  });
-                },
-              ),
-              CheckboxListTile(
-                title: Text('Completed'),
-                value: _completed,
-                onChanged: (value) {
-                  setState(() {
-                    _completed = value!;
-                    widget.task.completed = value;
-                  });
-                },
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Text(
-                    _dueDate == null
-                        ? 'No due date chosen'
-                        : 'Due Date: ${DateFormat('yyyy-MM-dd').format(_dueDate!)}',
+      body: Container(
+        color: Colors.blue[50],
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Title',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                  Spacer(),
-                  ElevatedButton(
-                    onPressed: () => _selectDueDate(context),
-                    child: Text('Choose Due Date'),
+                  onChanged: (value) {
+                    setState(() {
+                      widget.task.title = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _contentController,
+                  decoration: InputDecoration(
+                    labelText: 'Content',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                ],
-              ),
-            ],
+                  onChanged: (value) {
+                    setState(() {
+                      widget.task.content = value;
+                    });
+                  },
+                  maxLines: 3,
+                ),
+                SizedBox(height: 16),
+                CheckboxListTile(
+                  title: Text('Completed'),
+                  value: _completed,
+                  onChanged: (value) {
+                    setState(() {
+                      _completed = value!;
+                      widget.task.completed = value;
+                    });
+                  },
+                  activeColor: Colors.orange,
+                  checkColor: Colors.white,
+                  tileColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Text(
+                      _dueDate == null
+                          ? 'No date chosen'
+                          : 'Date: ${DateFormat('yyyy-MM-dd').format(_dueDate!)}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                      onPressed: () => _selectDueDate(context),
+                      child: Text('Choose Date'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton.icon(
+                    onPressed: _saveTask,
+                    icon: Icon(Icons.save),
+                    label: Text('Save Task'),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      textStyle: TextStyle(fontSize: 18),
+                      backgroundColor: Colors.orange,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _saveTask,
-        child: Icon(Icons.save),
       ),
     );
   }
