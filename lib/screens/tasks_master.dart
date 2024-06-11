@@ -48,6 +48,33 @@ class _TasksMasterState extends State<TasksMaster> {
     );
   }
 
+  void _deleteTask(BuildContext context, Task task) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Task'),
+          content: Text('Are you sure you want to delete this task?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<TasksProvider>(context, listen: false).deleteTask(task.id!);
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showFilterDialog(BuildContext context) {
     showDialog<TaskFilter>(
       context: context,
@@ -146,6 +173,7 @@ class _TasksMasterState extends State<TasksMaster> {
                       });
                     },
                     onTap: () => _editTask(context, task),
+                    onDelete: () => _deleteTask(context, task),
                   ),
                 );
               },

@@ -6,12 +6,14 @@ class TaskPreview extends StatelessWidget {
   final Task task;
   final ValueChanged<bool?> onChanged;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   const TaskPreview({
     Key? key,
     required this.task,
     required this.onChanged,
     required this.onTap,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -29,12 +31,21 @@ class TaskPreview extends StatelessWidget {
           children: [
             Text(task.content),
             if (task.dueDate != null)
-              Text('Due: ${DateFormat('yyyy-MM-dd').format(task.dueDate!)}'),
+              Text('Date: ${DateFormat('yyyy-MM-dd').format(task.dueDate!)}'),
           ],
         ),
-        trailing: Checkbox(
-          value: task.completed,
-          onChanged: onChanged,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Checkbox(
+              value: task.completed,
+              onChanged: onChanged,
+            ),
+            IconButton(
+              icon: Icon(Icons.delete, color: Colors.red),
+              onPressed: onDelete,
+            ),
+          ],
         ),
       ),
     );
