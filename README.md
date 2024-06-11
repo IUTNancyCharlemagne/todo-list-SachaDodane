@@ -1,17 +1,5 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15133149&assignment_repo_type=AssignmentRepo)
-# todo_list_v1
+## Variable d'environnement :
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+SUPABASE_URL=https://cskyvytztbvghpiloibi.supabase.co
+SUPABASE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNza3l2eXR6dGJ2Z2hwaWxvaWJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTc0OTE4ODgsImV4cCI6MjAzMzA2Nzg4OH0.LiI3cyhLzwdVaVJPx__v6kWaaITSFdqZSk8hAMUcBGE
+SUPABASE_PRIVATE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNza3l2eXR6dGJ2Z2hwaWxvaWJpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNzQ5MTg4OCwiZXhwIjoyMDMzMDY3ODg4fQ.lLkw-Pap5-Y95QJ65JN-EcemL5fs2f9J1d6IXw1rqd8
