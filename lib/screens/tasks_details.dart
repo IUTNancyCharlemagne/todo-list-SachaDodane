@@ -35,7 +35,6 @@ class _TaskDetailsState extends State<TaskDetails> {
     widget.task.title = _titleController.text;
     widget.task.content = _contentController.text;
     widget.task.completed = _completed;
-    print('Saving updated task: ${widget.task.toJson()}');
     widget.onSave(widget.task);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
