@@ -9,15 +9,12 @@ class TasksProvider extends ChangeNotifier {
   List<Task> get tasks => _tasks;
 
   Future<void> fetchTasks() async {
-    print('Fetching tasks from Supabase...');
     final response = await _client.from('tasks').select().execute();
     if (response.error == null) {
-      print('Fetched tasks successfully: ${response.data}');
       final List<dynamic> data = response.data;
       _tasks = data.map((json) => Task.fromJson(json)).toList();
       notifyListeners();
     } else {
-      print('Failed to fetch tasks: ${response.error!.message}');
       throw Exception('Failed to fetch tasks');
     }
   }

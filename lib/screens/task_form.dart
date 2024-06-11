@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_v1/models/task.dart';
+import 'package:intl/intl.dart';
 
 class TaskForm extends StatefulWidget {
   final Function(Task) onSave;
@@ -15,6 +16,7 @@ class _TaskFormState extends State<TaskForm> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   bool _completed = false;
+  DateTime? _dueDate;
 
   @override
   void initState() {
@@ -30,6 +32,20 @@ class _TaskFormState extends State<TaskForm> {
     super.dispose();
   }
 
+  Future<void> _selectDueDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _dueDate) {
+      setState(() {
+        _dueDate = picked;
+      });
+    }
+  }
+
   void _saveTask() {
     if (_formKey.currentState!.validate()) {
       final newTask = Task(
@@ -37,6 +53,7 @@ class _TaskFormState extends State<TaskForm> {
         title: _titleController.text,
         content: _contentController.text,
         completed: _completed,
+        dueDate: _dueDate,
       );
       print('Saving task: ${newTask.toJson()}');
       widget.onSave(newTask);
@@ -88,6 +105,21 @@ class _TaskFormState extends State<TaskForm> {
                     _completed = value!;
                   });
                 },
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Text(
+                    _dueDate == null
+                        ? 'No due date chosen'
+                        : 'Due Date: ${DateFormat('yyyy-MM-dd').format(_dueDate!)}',
+                  ),
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () => _selectDueDate(context),
+                    child: Text('Choose Due Date'),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
               ElevatedButton(

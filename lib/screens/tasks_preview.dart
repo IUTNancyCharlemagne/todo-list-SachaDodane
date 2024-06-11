@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_v1/models/task.dart';
+import 'package:intl/intl.dart';
 
 class TaskPreview extends StatelessWidget {
   final Task task;
@@ -7,24 +8,28 @@ class TaskPreview extends StatelessWidget {
   final VoidCallback onTap;
 
   const TaskPreview({
-    super.key,
+    Key? key,
     required this.task,
     required this.onChanged,
     required this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: task.completed ? Colors.green : Colors.orange,
-      child: ListTile(
-        title: Text(task.title),
-        subtitle: Text(task.content),
-        trailing: Checkbox(
-          value: task.completed,
-          onChanged: onChanged,
-        ),
-        onTap: onTap,
+    return ListTile(
+      onTap: onTap,
+      title: Text(task.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(task.content),
+          if (task.dueDate != null)
+            Text('Due: ${DateFormat('yyyy-MM-dd').format(task.dueDate!)}'),
+        ],
+      ),
+      trailing: Checkbox(
+        value: task.completed,
+        onChanged: onChanged,
       ),
     );
   }
