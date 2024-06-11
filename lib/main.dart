@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
-import 'todo_list_app.dart';
-
-void main() {
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo_list_v1/todo_list_app.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: 'assets/.env');
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_API_KEY']!,
+  );
   runApp(const ToDoListApp());
 }

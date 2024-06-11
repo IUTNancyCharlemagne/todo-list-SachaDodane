@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list_v1/screens/tasks_master.dart';
+import 'package:todo_list_v1/models/task_provider.dart';
 
-class ToDoListApp extends StatefulWidget {
+class ToDoListApp extends StatelessWidget {
   const ToDoListApp({super.key});
 
   @override
-  State<ToDoListApp> createState() => _ToDoListAppState();
-}
-
-class _ToDoListAppState extends State<ToDoListApp> {
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('ToDo List'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TasksProvider()),
+      ],
+      child: MaterialApp(
+        title: 'ToDo List App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(Icons.add),
-        ),
+        home: const TasksMaster(),
       ),
     );
   }
