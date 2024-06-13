@@ -1,3 +1,8 @@
+### Bonus
+
+Pour ce qui est des bonus j'ai décidé d'en faire 3, un pour choisir une date pour les tâches, un pour filtrer les tâches en temps que complétés ou non, et un dernier afin de permettre à l'utilisateur de supprimer une tâche.
+
+
 ## Variable d'environnement :
 
 SUPABASE_URL=https://cskyvytztbvghpiloibi.supabase.co
